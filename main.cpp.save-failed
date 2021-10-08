@@ -1,0 +1,894 @@
+#include <windows.h>
+#include <stdio.h>
+#include <string>
+#include <mysql.h>
+#include <iostream>
+#include <sstream>
+#include <conio.h>
+#include <stdio.h>
+
+using namespace std;
+
+/*
+void intro()
+{
+
+	cout<<"\n\t\t\t*********************************************************************************";
+    cout<<"\n\t\t           * VES Institute Of Technology *";
+        cout<<"\n\t\t\t*************************************************************************************";
+    cout<<"\n\t\tMade By: \t           Ankit Rama Yadav - 60 ";
+    cout<<"\n\t\tMade By: \t           Balkrishna  Ravada - 45 ";
+    cout<<"\t";
+	cout<<"\n\n\n\t            TOPIC: STUDENT DATABASE MANAGEMENT SYSTEM";
+	//cout<<"\n\n\n\n\n\n\t\t\t\tPress any key to continue.........";
+
+}
+*/
+
+void insertStudent()
+{
+    //cout << "inside inserted"<<endl;
+
+    string temp;
+    stringstream ss;
+    string id;
+
+    cout << "\n\n\n\t            ADD STUDENT DEATILS\n\n"
+         << endl;
+    cout << "ENTER STUDENT ID   :   ";
+    cin >> id;
+
+    MYSQL *conn;
+    MYSQL_ROW row;
+    MYSQL_RES *res;
+    conn = mysql_init(0);
+    conn = mysql_real_connect(conn, "localhost", "root", "", "SDBMS", 0, NULL, 0);
+
+    ss << "select id from student where id='" << id << "'";
+    string query = ss.str();
+    const char *q = query.c_str();
+    int state = mysql_query(conn, q);
+    if (!state)
+    {
+        res = mysql_store_result(conn);
+        while (row = mysql_fetch_row(res))
+        {
+            temp = row[0];
+        }
+    }
+    if (id != temp)
+    {
+        // cout<<"id=   "<<id<<endl;
+        //cout<<"temp=   "<<temp<<endl;
+
+        //cout << "id: " << id << endl;
+        //cout << "temp: " << temp << endl;
+        //cout << "id did not matched" << endl;
+        stringstream ss1;
+        int state = 0;
+        string password;
+        string name;
+        string dob;
+        string gender;
+        string address;
+        string phone;
+        string email;
+
+        cout << "Password: ";
+        cin >> password;
+        cout << " Name: ";
+        cin >> name;
+        cout << "DOB: ";
+        cin >> dob;
+        cout << "GENDER: ";
+        cin >> gender;
+        cout << "ADDRESS: ";
+        cin >> address;
+        cout << "PHONE: ";
+        cin >> phone;
+        cout << "EMAIL: ";
+        cin >> email;
+
+        MYSQL *conn;
+        MYSQL_ROW row;
+        MYSQL_RES *res;
+        conn = mysql_init(0);
+        conn = mysql_real_connect(conn, "localhost", "root", "", "sdbms", 0, NULL, 0);
+        ss1 << "INSERT INTO student VALUES('" << id << "','" << password << "','" << name << "','" << dob << "','" << gender << "','" << address << "','" << phone << "','" << email << "')";
+        //
+        //cout << "id: " << id << endl;
+        string query1 = ss1.str();
+        //cout << "q1 :   " << query1 << endl;
+        const char *q1 = query1.c_str();
+        state = mysql_query(conn, q1);
+        //cout << "state: " << state;
+        if (state == 0)
+        {
+            cout << "INSERTED STUDENT OF ID = " << id << "\n\n\n"
+                 << endl;
+        }
+        else
+        {
+            cout << " CAN NOT INSERT \n\n\n"
+                 << endl
+                 << mysql_error(conn) << endl;
+        }
+    }
+    else
+    {
+        //cout<<"id=   "<<id<<endl;
+        //cout<<"temp=   "<<temp<<endl;
+        //cout<<"id matched";
+        cout << "STUDENT ALLREADY EXIST\n\n\n";
+    }
+}
+
+void searchStudent()
+{
+    string temp;
+    stringstream ss;
+    string id;
+    cout << "\n\t            SEARCH STUDENT DEATILS\n\n"
+         << endl;
+    cout << "ENTER STUDENT ID   :   ";
+    cin >> id;
+    cout << endl;
+
+    MYSQL *conn;
+    MYSQL_ROW row;
+    MYSQL_RES *res;
+    conn = mysql_init(0);
+    conn = mysql_real_connect(conn, "localhost", "root", "", "SDBMS", 0, NULL, 0);
+
+    ss << "select * from student where id='" << id << "'";
+    string query = ss.str();
+    const char *q = query.c_str();
+    int state = mysql_query(conn, q);
+    if (!state)
+    {
+        res = mysql_store_result(conn);
+        while (row = mysql_fetch_row(res))
+        {
+            cout << "ID         :   " << row[0] << " " << endl
+                 << "PASSWORD   :   " << row[1] << " " << endl
+                 << "NAME       :   " << row[2] << " " << endl
+                 << "DOB        :   " << row[3] << " " << endl
+                 << "GENDER     :   " << row[4] << " " << endl
+                 << "ADDRESS    :   " << row[5] << " " << endl
+                 << "PHONE      :   " << row[6] << " " << endl
+                 << "EMAIL      :   " << row[7] << endl;
+        }
+    }
+}
+
+void updateStudent()
+{
+
+    string temp;
+    stringstream ss;
+    string id;
+
+    cout << "\n\t            SEARCH STUDENT DEATILS\n\n"
+         << endl;
+    cout << "ENTER STUDENT ID :   ";
+    cin >> id;
+
+    MYSQL *conn;
+    MYSQL_ROW row;
+    MYSQL_RES *res;
+    conn = mysql_init(0);
+    conn = mysql_real_connect(conn, "localhost", "root", "", "SDBMS", 0, NULL, 0);
+
+    ss << "select id from student where id='" << id << "'";
+    string query = ss.str();
+    const char *q = query.c_str();
+    int state = mysql_query(conn, q);
+    if (!state)
+    {
+        res = mysql_store_result(conn);
+        while (row = mysql_fetch_row(res))
+        {
+            temp = row[0];
+        }
+    }
+    if (id == temp)
+    {
+        int state = 0;
+        stringstream ss;
+        string password;
+        string name;
+        string dob;
+        string gender;
+        string address;
+        string phone;
+        string email;
+        cout << "Password: ";
+        cin >> password;
+        cout << "Name: ";
+        cin >> name;
+        cout << "DOB: ";
+        cin >> dob;
+        cout << "GENDER: ";
+        cin >> gender;
+        cout << "ADDRESS: ";
+        cin >> address;
+        cout << "PHONE: ";
+        cin >> phone;
+        cout << "EMAIL: ";
+        cin >> email;
+        MYSQL *conn;
+        MYSQL_ROW row;
+        MYSQL_RES *res;
+        conn = mysql_init(0);
+        conn = mysql_real_connect(conn, "localhost", "root", "", "SDBMS", 0, NULL, 0);
+
+        ss << "update  student set password='" << password << "',name='" << name << "',dob='" << dob << "',gender='" << gender << "',address='" << address << "',phone='" << phone << "',email='" << email << "' where id='" << id << "'";
+        string query = ss.str();
+        const char *q = query.c_str();
+        state = mysql_query(conn, q);
+
+        if (state == 0)
+        {
+            cout << "UPDATE STUDENT DATA OF ID  :   " << id;
+            /*if (!state)
+            {
+                res = mysql_store_result(conn);
+                while (row = mysql_fetch_row(res))
+                {
+                    cout << "Student id/Roll No.:" << row[0]<< endl
+                         << "ITM:" << row[1] << " " << endl
+                         << "COA:" << row[2] << " " << endl
+                         << "OOPS:" << row[3] << " " << endl
+                         << "SEPM:" << row[4] << " " << endl
+                         << "MATHS:" << row[5] << endl;
+                }
+            }
+            else
+            {
+                cout << mysql_error(conn);
+            }
+            */
+        }
+        else
+        {
+            cout << "CAN NOT UPDATE, SOME DATABASE PROBLEM" << endl;
+        }
+    }
+    else
+    {
+        cout << "ID DOES NOT EXIST" << endl;
+    }
+}
+
+void deleteStudent()
+{
+    //cout << "inside delete";
+    string temp;
+    stringstream ss;
+    string id;
+    cout << "\n\t            DELETE STUDENT INFORMATION\n\n"
+         << endl;
+    cout << "\n\nENTER STUDENT ID  :   ";
+    cin >> id;
+
+    MYSQL *conn;
+    MYSQL_ROW row;
+    MYSQL_RES *res;
+    conn = mysql_init(0);
+    conn = mysql_real_connect(conn, "localhost", "root", "", "SDBMS", 0, NULL, 0);
+
+    ss << "select id from student where id='" << id << "'";
+    string query = ss.str();
+    const char *q = query.c_str();
+    int state = mysql_query(conn, q);
+    if (!state)
+    {
+        res = mysql_store_result(conn);
+        while (row = mysql_fetch_row(res))
+        {
+            temp = row[0];
+        }
+    }
+    if (id == temp)
+    {
+        //cout << "id: " << id << endl;
+        //cout << "temp: " << temp << endl;
+        //cout << "id matched" << endl;
+        stringstream ss1;
+        int state = 0;
+        MYSQL *conn;
+        MYSQL_ROW row;
+        MYSQL_RES *res;
+        conn = mysql_init(0);
+        conn = mysql_real_connect(conn, "localhost", "root", "", "sdbms", 0, NULL, 0);
+        ss1 << "delete from student where id='" << id << "'";
+        //cout << "id: " << id << endl;
+        string query1 = ss1.str();
+        //cout << "q1 :   " << query1 << endl;
+        const char *q1 = query1.c_str();
+        state = mysql_query(conn, q1);
+        //cout << "state: " << state;
+        if (state == 0)
+        {
+            cout << "DELETED ID    :   " << id << endl;
+        }
+        else
+        {
+            cout << mysql_error(conn) << endl;
+        }
+    }
+    else
+    {
+        cout << "STUDENT NOT EVEN EXIST\n\n"
+             << endl;
+    }
+}
+
+void insertTeacher()
+{
+    cout << "\n\n\n\t            ADD STUDENT DEATILS\n\n"
+         << endl;
+    cout << "ENTER TEACHER ID   :   ";
+    string temp;
+    stringstream ss;
+    string id;
+    cin >> id;
+
+    MYSQL *conn;
+    MYSQL_ROW row;
+    MYSQL_RES *res;
+    conn = mysql_init(0);
+    conn = mysql_real_connect(conn, "localhost", "root", "", "SDBMS", 0, NULL, 0);
+
+    ss << "select id from teacher where id='" << id << "'";
+    string query = ss.str();
+    const char *q = query.c_str();
+    int state = mysql_query(conn, q);
+    if (!state)
+    {
+        res = mysql_store_result(conn);
+        while (row = mysql_fetch_row(res))
+        {
+            temp = row[0];
+        }
+    }
+    if (id != temp)
+    {
+        //cout<<"id=   "<<id<<endl;
+        //cout<<"temp=   "<<temp<<endl;
+        //cout << "id: " << id << endl;
+        //cout << "temp: " << temp << endl;
+        //cout << "id and temp din NOT matched" << endl;
+        stringstream ss1;
+        int state = 0;
+        string password;
+        string name;
+        string subject;
+
+        cout << "PASSWORD   :   " << endl;
+        cin >> password;
+        cout << "NAME       :   " << endl;
+        cin >> name;
+        cout << "SUBJECT    :   " << endl;
+        cin >> subject;
+
+        MYSQL *conn;
+        MYSQL_ROW row;
+        MYSQL_RES *res;
+        conn = mysql_init(0);
+        conn = mysql_real_connect(conn, "localhost", "root", "", "sdbms", 0, NULL, 0);
+        ss1 << "INSERT INTO teacher VALUES('" << id << "','" << password << "','" << name << "','" << subject << "')";
+        cout << "id: " << id << endl;
+        string query1 = ss1.str();
+        cout << "q1 :   " << query1 << endl;
+        const char *q1 = query1.c_str();
+        state = mysql_query(conn, q1);
+        cout << "state: " << state;
+        if (state == 0)
+        {
+            cout << "INSERTED TEACHERS ID   :   " << id << endl;
+        }
+        else
+        {
+            cout << mysql_error(conn) << endl;
+        }
+    }
+    else
+    {
+        //cout<<"id=   "<<id<<endl;
+        //cout<<"temp=   "<<temp<<endl;
+        //cout<<"id matched";
+        cout << "TEACHER ALREADY EXIST" << endl;
+    }
+}
+
+void searchTeacher()
+{
+    string temp;
+    stringstream ss;
+    string id;
+    cout << "\n\n\n\t            SEARCH TEACHER DEATILS\n\n"
+         << endl;
+    cout << "ENTER TEACHER ID   :   ";
+    cin >> id;
+
+    MYSQL *conn;
+    MYSQL_ROW row;
+    MYSQL_RES *res;
+    conn = mysql_init(0);
+    conn = mysql_real_connect(conn, "localhost", "root", "", "SDBMS", 0, NULL, 0);
+
+    ss << "select * from teacher where id='" << id << "'";
+    string query = ss.str();
+    const char *q = query.c_str();
+    int state = mysql_query(conn, q);
+    if (!state)
+    {
+        //cout<<"state :  "<<state<<endl;
+        //cout<<"inside search"<<endl;
+        res = mysql_store_result(conn);
+        //cout<<"res :"<<res<<endl;
+        while (row = mysql_fetch_row(res))
+        {
+            cout << endl
+                 << "ID         :" << row[0] << " " << endl
+                 << "PASSWORD   :" << row[1] << " " << endl
+                 << "NAME       :" << row[2] << " " << endl
+                 << "SUBJECT    :" << row[3] << " " << endl;
+        }
+    }
+}
+
+void updateTeacher()
+{
+
+    string temp;
+    stringstream ss;
+    string id;
+    cout << "\n\t            UPDATE TEACHER DEATILS\n\n"
+         << endl;
+    cout << "ENTER TEACHER ID :   ";
+    cin >> id;
+
+    MYSQL *conn;
+    MYSQL_ROW row;
+    MYSQL_RES *res;
+    conn = mysql_init(0);
+    conn = mysql_real_connect(conn, "localhost", "root", "", "SDBMS", 0, NULL, 0);
+
+    ss << "select id from teacher where id='" << id << "'";
+    string query = ss.str();
+    const char *q = query.c_str();
+    int state = mysql_query(conn, q);
+    if (!state)
+    {
+        res = mysql_store_result(conn);
+        while (row = mysql_fetch_row(res))
+        {
+            temp = row[0];
+        }
+    }
+    if (id == temp)
+    {
+        int state = 0;
+        stringstream ss;
+        string password;
+        string name;
+        string subject;
+
+        cin >> password >> name >> subject;
+        MYSQL *conn;
+        MYSQL_ROW row;
+        MYSQL_RES *res;
+        conn = mysql_init(0);
+        conn = mysql_real_connect(conn, "localhost", "root", "", "SDBMS", 0, NULL, 0);
+
+        ss << "update  teacher set password='" << password << "',name='" << name << "',subject='" << subject << "'";
+        string query = ss.str();
+        const char *q = query.c_str();
+        state = mysql_query(conn, q);
+
+        if (state == 0)
+        {
+            cout << endl
+                 << "UPDATED TEACHER INFORMATION OF ID  :   " << id << endl;
+            /*if (!state)
+            {
+                res = mysql_store_result(conn);
+                while (row = mysql_fetch_row(res))
+                {
+                    cout << "Student id/Roll No.:" << row[0] << " " << endl
+                         << "ITM:" << row[1] << " " << endl
+                         << "COA:" << row[2] << " " << endl
+                         << "OOPS:" << row[3] << " " << endl;
+                }
+            }
+            else
+            {
+                cout << mysql_error(conn);
+            }*/
+        }
+        else
+        {
+            cout << "not updated";
+        }
+    }
+    else
+    {
+        cout << "TEACHER DOES NOT EXISTS" << endl;
+    }
+}
+
+void deleteTeacher()
+{
+    //cout << "inside delete";
+    string temp;
+    stringstream ss;
+    string id;
+    cout << "\n\t            DELETE TEACHER DEATILS\n\n"
+         << endl;
+    cout << "ENTER TEACHER ID :   ";
+    cin >> id;
+
+    MYSQL *conn;
+    MYSQL_ROW row;
+    MYSQL_RES *res;
+    conn = mysql_init(0);
+    conn = mysql_real_connect(conn, "localhost", "root", "", "SDBMS", 0, NULL, 0);
+
+    ss << "select id from teacher where id='" << id << "'";
+    string query = ss.str();
+    const char *q = query.c_str();
+    int state = mysql_query(conn, q);
+    if (!state)
+    {
+        res = mysql_store_result(conn);
+        while (row = mysql_fetch_row(res))
+        {
+            temp = row[0];
+        }
+    }
+    if (id == temp)
+    {
+        //cout << "id: " << id << endl;
+        //cout << "temp: " << temp << endl;
+        //cout << "id matched" << endl;
+        stringstream ss1;
+        int state = 0;
+        MYSQL *conn;
+        MYSQL_ROW row;
+        MYSQL_RES *res;
+        conn = mysql_init(0);
+        conn = mysql_real_connect(conn, "localhost", "root", "", "sdbms", 0, NULL, 0);
+        ss1 << "delete from teacher where id='" << id << "'";
+        //cout << "id: " << id << endl;
+        string query1 = ss1.str();
+        //cout << "q1 :   " << query1 << endl;
+        const char *q1 = query1.c_str();
+        state = mysql_query(conn, q1);
+        //cout << "state: " << state;
+        if (state == 0)
+        {
+            cout << "DELETED ID    :   " << id << endl;
+        }
+        else
+        {
+            cout << mysql_error(conn) << endl;
+        }
+    }
+    else
+    {
+        cout << "TEACHER NOT EXIST" << endl
+             << mysql_error(conn);
+    }
+}
+
+void insertMarks()
+{
+    //cout << "inside INSERT reult"<<endl;
+    string temp;
+    stringstream ss;
+    string id;
+    cout << "\n\t            INSERT MARKS\n\n"
+         << endl;
+    cout << "ENTER STUDENT ID :   ";
+    cin >> id;
+
+    MYSQL *conn;
+    MYSQL_ROW row;
+    MYSQL_RES *res;
+    conn = mysql_init(0);
+    conn = mysql_real_connect(conn, "localhost", "root", "", "SDBMS", 0, NULL, 0);
+
+    ss << "select id from result where id='" << id << "'";
+    string query = ss.str();
+    const char *q = query.c_str();
+    int state = mysql_query(conn, q);
+    if (!state)
+    {
+        res = mysql_store_result(conn);
+        while (row = mysql_fetch_row(res))
+        {
+            temp = row[0];
+        }
+    }
+    if (id != temp)
+    {
+        //cout<<"id=   "<<id<<endl;
+        //cout<<"temp=   "<<temp<<endl;
+        //cout << "id: " << id << endl;
+        //cout << "temp: " << temp << endl;
+        //cout << "id and temp din NOT matched" << endl;
+        stringstream ss1;
+        int state = 0;
+        string itm;
+        string coa;
+        string oops;
+        string sepm;
+        string maths;
+
+        cout << "ITM      :   ";
+        cin >> itm;
+        cout << "COA      :   ";
+        cin >> coa;
+        cout << "OOPS     :   ";
+        cin >> oops;
+        cout << "SEPM     :   ";
+        cin >> sepm;
+        cout << "MATHS    :   ";
+        cin >> maths;
+
+        MYSQL *conn;
+        MYSQL_ROW row;
+        MYSQL_RES *res;
+        conn = mysql_init(0);
+        conn = mysql_real_connect(conn, "localhost", "root", "", "sdbms", 0, NULL, 0);
+        ss1 << "INSERT INTO result VALUES('" << id << "','" << itm << "','" << coa << "','" << oops << "','" << sepm << "','" << maths << "')";
+        //cout << "id: " << id << endl;
+        string query1 = ss1.str();
+        //cout << "q1 :   " << query1 << endl;
+        const char *q1 = query1.c_str();
+        state = mysql_query(conn, q1);
+        //cout << "state: " << state;
+        if (state == 0)
+        {
+            cout << "INSERTED MARKS OF STUDENT ID   :   " << id << endl;
+        }
+        else
+        {
+            cout << " cant insert" << endl
+                 << mysql_error(conn) << endl;
+        }
+    }
+    else
+    {
+
+        /*cout<<"id=   "<<id<<endl;
+        cout<<"temp=   "<<temp<<endl;
+        cout<<"id matched*/
+        cout << "MARKS OF STUDENT  ID " << id << " ALLREADY EXIST";
+    }
+}
+
+void updateMarks()
+{
+
+    string temp;
+    stringstream ss;
+    string id;
+    cout << "\n\t            UPDATE MARKS\n\n"
+         << endl;
+    cout << "ENTER STUDENT ID :   ";
+    cin >> id;
+
+    MYSQL *conn;
+    MYSQL_ROW row;
+    MYSQL_RES *res;
+    conn = mysql_init(0);
+    conn = mysql_real_connect(conn, "localhost", "root", "", "SDBMS", 0, NULL, 0);
+
+    ss << "select id from result where id='" << id << "'";
+    string query = ss.str();
+    const char *q = query.c_str();
+    int state = mysql_query(conn, q);
+    if (!state)
+    {
+        res = mysql_store_result(conn);
+        while (row = mysql_fetch_row(res))
+        {
+            temp = row[0];
+        }
+    }
+    if (id == temp)
+    {
+        int state = 0;
+        stringstream ss;
+        string itm;
+        string coa;
+        string oops;
+        string sepm;
+        string maths;
+
+        cout << "ITM      :   ";
+        cin >> itm;
+        cout << "COA      :   ";
+        cin >> coa;
+        cout << "OOPS     :   ";
+        cin >> oops;
+        cout << "SEPM     :   ";
+        cin >> sepm;
+        cout << "MATHS    :   ";
+        cin >> maths;
+
+        MYSQL *conn;
+        MYSQL_ROW row;
+        MYSQL_RES *res;
+        conn = mysql_init(0);
+        conn = mysql_real_connect(conn, "localhost", "root", "", "SDBMS", 0, NULL, 0);
+
+        ss << "update  result set itm='" << itm << "',coa='" << coa << "',oops='" << oops << "',sepm='" << sepm << "',maths='" << maths << "'";
+        string query = ss.str();
+        const char *q = query.c_str();
+        state = mysql_query(conn, q);
+
+        if (state == 0)
+        {
+            cout << endl
+                 << "UPDATED MARKS OF STUDENT ID    :   " << id << endl;
+            /*
+            if (!state)
+            {
+                res = mysql_store_result(conn);
+                while (row = mysql_fetch_row(res))
+                {
+                    cout << "Student id/Roll No.:" << row[0] << " " << endl
+                         << "ITM:" << row[1] << " " << endl
+                     << "COA:" << row[2] << " " << endl
+                     << "OOPS:" << row[3] << " " << endl
+                     << "SEPM:" << row[4] << " " << endl
+                     << "MATHS:" << row[5] << endl;
+
+                }
+            }
+            else
+            {
+                cout << mysql_error(conn);
+            }
+            */
+        }
+        else
+        {
+            cout << "not updated";
+        }
+    }
+    else
+    {
+        cout << "STUDENT RESULT NOT EXIST";
+    }
+}
+
+void deleteMarks()
+{
+    cout << "\n\t            DELETE RESULT\n\n"
+         << endl;
+    cout << "ENTER STUDENT ID :   ";
+    string temp;
+    stringstream ss;
+    string id;
+    cin >> id;
+
+    MYSQL *conn;
+    MYSQL_ROW row;
+    MYSQL_RES *res;
+    conn = mysql_init(0);
+    conn = mysql_real_connect(conn, "localhost", "root", "", "SDBMS", 0, NULL, 0);
+
+    ss << "select id from result where id='" << id << "'";
+    string query = ss.str();
+    const char *q = query.c_str();
+    int state = mysql_query(conn, q);
+    if (!state)
+    {
+        res = mysql_store_result(conn);
+        while (row = mysql_fetch_row(res))
+        {
+            temp = row[0];
+        }
+    }
+    if (id == temp)
+    {
+        //cout << "id: " << id << endl;
+        //cout << "temp: " << temp << endl;
+        //cout << "id matched" << endl;
+        stringstream ss1;
+        int state = 0;
+        MYSQL *conn;
+        MYSQL_ROW row;
+        MYSQL_RES *res;
+        conn = mysql_init(0);
+        conn = mysql_real_connect(conn, "localhost", "root", "", "sdbms", 0, NULL, 0);
+        ss1 << "delete from result where id='" << id << "'";
+        //cout << "id: " << id << endl;
+        string query1 = ss1.str();
+        //cout << "q1 :   " << query1 << endl;
+        const char *q1 = query1.c_str();
+        state = mysql_query(conn, q1);
+        //cout << "state: " << state;
+        if (state == 0)
+        {
+            cout << endl
+                 << "DELETED RESULT OF STUDENT ID   :   " << id << endl;
+        }
+        else
+        {
+            cout << " cant delete" << endl
+                 << mysql_error(conn) << endl;
+        }
+    }
+    else
+    {
+        cout << "STUDENT RESULT NOT EXIST" << endl;
+    }
+}
+
+void searchResult()
+{
+    string temp;
+    stringstream ss;
+    string id;
+    cout << "\n\t            SEARCH RESULT\n\n"
+         << endl;
+    cout << "ENTER STUDENT ID :   ";
+    cin >> id;
+
+    MYSQL *conn;
+    MYSQL_ROW row;
+    MYSQL_RES *res;
+    conn = mysql_init(0);
+    conn = mysql_real_connect(conn, "localhost", "root", "", "SDBMS", 0, NULL, 0);
+
+    ss << "select * from result where id='" << id << "'";
+    string query = ss.str();
+    const char *q = query.c_str();
+    int state = mysql_query(conn, q);
+    if (!state)
+    {
+        cout << "state :  " << state << endl;
+        //cout<<"inside search"<<endl;
+        res = mysql_store_result(conn);
+        //cout<<"res :"<<res<<endl;
+        while (row = mysql_fetch_row(res))
+        {
+            cout << endl
+                 << "id     :   " << row[0] << " " << endl
+                 << "ITM    :   " << row[1] << " " << endl
+                 << "COA    :   " << row[2] << " " << endl
+                 << "OOPS   :   " << row[3] << " " << endl
+                 << "SEPM   :   " << row[4] << " " << endl
+                 << "MATHS  :   " << row[5] << " " << endl;
+        }
+    }
+}
+
+int main()
+{
+
+    //intro();
+
+    //insertStudent();
+    //searchStudent();
+    //updateStudent();
+    //deleteStudent();
+
+    //insertTeacher();
+    //searchTeacher();
+    //updateTeacher();
+    //deleteTeacher();
+
+    insertMarks();
+    updateMarks();
+    deleteMarks();
+    searchResult();
+
+    return 0;
+}
